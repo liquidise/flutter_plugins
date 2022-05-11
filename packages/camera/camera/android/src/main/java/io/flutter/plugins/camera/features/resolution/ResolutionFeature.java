@@ -250,7 +250,7 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       return;
     }
 
-    Size actualMax;
+    Size actualMax = null;
     if( resolutionPreset == ResolutionPreset.photoMax ) {
       try {
         CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics( String.valueOf(cameraId) );

@@ -263,7 +263,7 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       } catch( CameraAccessException e ) {}
     }
 
-    if( !actualMax ) {
+    if( actualMax == null ) {
       if (Build.VERSION.SDK_INT >= 31) {
         recordingProfile =
             getBestAvailableCamcorderProfileForResolutionPreset(cameraId, resolutionPreset);

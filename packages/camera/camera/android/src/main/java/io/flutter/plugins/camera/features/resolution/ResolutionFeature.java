@@ -6,7 +6,7 @@ package io.flutter.plugins.camera.features.resolution;
 
 import android.app.Activity;
 import android.annotation.TargetApi;
-import android.content.Context
+import android.content.Context;
 import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;

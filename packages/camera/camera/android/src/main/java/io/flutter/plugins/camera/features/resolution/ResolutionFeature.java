@@ -11,6 +11,7 @@ import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
+import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.CamcorderProfile;
 import android.media.EncoderProfiles;
 import android.os.Build;
@@ -248,8 +249,8 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       return;
     }
 
-    if( resolutionPreset == photoMax ) {
-      CameraCharacteristics characteristics = CameraManager.getCameraCharacteristics( cameraId );
+    if( resolutionPreset == ResolutionPreset.photoMax ) {
+      CameraCharacteristics characteristics = CameraManager.getCameraCharacteristics( cameraId.toString() );
       StreamConfigurationMap streamConfig = characteristics.get(
         CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP
       );

@@ -22,7 +22,12 @@ flutter:
         default_package: camera_web
 
 dependencies:
-  camera_platform_interface: ^2.1.0
+  camera_platform_interface:
+    git:
+      url: https://github.com/liquidise/flutter_plugins.git
+      ref: highres
+      path: packages/camera/camera_platform_interface
+
   camera_web: ^0.2.1
   flutter:
     sdk: flutter

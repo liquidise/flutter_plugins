@@ -251,7 +251,7 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       StreamConfigurationMap streamConfig = characteristics.get(
         CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP
       );
-      Log.d( 'RESOLUTION', streamConfig.getOutputSizes(ImageFormat.PRIVATE) );
+      Log.d( "RESOLUTION", streamConfig.getOutputSizes(ImageFormat.PRIVATE) );
       captureSize = streamConfig.getOutputSizes(ImageFormat.PRIVATE)[0];
     } else if (Build.VERSION.SDK_INT >= 31) {
       recordingProfile =

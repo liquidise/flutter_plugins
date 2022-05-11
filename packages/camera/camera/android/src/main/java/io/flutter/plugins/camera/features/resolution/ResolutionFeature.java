@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.ImageFormat;
+import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
@@ -249,31 +250,39 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       return;
     }
 
+    Size actualMax;
     if( resolutionPreset == ResolutionPreset.photoMax ) {
-      CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics( String.valueOf(cameraId) );
-      StreamConfigurationMap streamConfig = characteristics.get(
-        CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP
-      );
-      Log.d( "RESOLUTION", streamConfig.getOutputSizes(ImageFormat.PRIVATE).toString() );
-      captureSize = streamConfig.getOutputSizes(ImageFormat.PRIVATE)[0];
-    } else if (Build.VERSION.SDK_INT >= 31) {
-      recordingProfile =
-          getBestAvailableCamcorderProfileForResolutionPreset(cameraId, resolutionPreset);
-      List<EncoderProfiles.VideoProfile> videoProfiles = recordingProfile.getVideoProfiles();
+      try {
+        CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics( String.valueOf(cameraId) );
+        StreamConfigurationMap streamConfig = characteristics.get(
+          CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP
+        );
+        Log.d( "RESOLUTION", streamConfig.getOutputSizes(ImageFormat.PRIVATE).toString() );
+        actualMax = streamConfig.getOutputSizes(ImageFormat.PRIVATE)[0];
+        captureSize = actualMax;
+      } catch( CameraAccessException e ) {}
+    }
 
-      EncoderProfiles.VideoProfile defaultVideoProfile = videoProfiles.get(0);
-      captureSize = new Size(defaultVideoProfile.getWidth(), defaultVideoProfile.getHeight());
+    if( !actualMax ) {
+      if (Build.VERSION.SDK_INT >= 31) {
+        recordingProfile =
+            getBestAvailableCamcorderProfileForResolutionPreset(cameraId, resolutionPreset);
+        List<EncoderProfiles.VideoProfile> videoProfiles = recordingProfile.getVideoProfiles();
 
-      previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
-    } else {
-      @SuppressWarnings("deprecation")
-      CamcorderProfile camcorderProfile =
-          getBestAvailableCamcorderProfileForResolutionPresetLegacy(cameraId, resolutionPreset);
-      recordingProfileLegacy = camcorderProfile;
-      captureSize =
-          new Size(recordingProfileLegacy.videoFrameWidth, recordingProfileLegacy.videoFrameHeight);
+        EncoderProfiles.VideoProfile defaultVideoProfile = videoProfiles.get(0);
+        captureSize = new Size(defaultVideoProfile.getWidth(), defaultVideoProfile.getHeight());
 
-      previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
+        previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
+      } else {
+        @SuppressWarnings("deprecation")
+        CamcorderProfile camcorderProfile =
+            getBestAvailableCamcorderProfileForResolutionPresetLegacy(cameraId, resolutionPreset);
+        recordingProfileLegacy = camcorderProfile;
+        captureSize =
+            new Size(recordingProfileLegacy.videoFrameWidth, recordingProfileLegacy.videoFrameHeight);
+
+        previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
+      }
     }
   }
 }

@@ -12,5 +12,4 @@ public enum ResolutionPreset {
   veryHigh,
   ultraHigh,
   max,
-  photoMax,
 }

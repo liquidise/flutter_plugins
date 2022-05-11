@@ -271,8 +271,6 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
 
         EncoderProfiles.VideoProfile defaultVideoProfile = videoProfiles.get(0);
         captureSize = new Size(defaultVideoProfile.getWidth(), defaultVideoProfile.getHeight());
-
-        previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
       } else {
         @SuppressWarnings("deprecation")
         CamcorderProfile camcorderProfile =
@@ -280,9 +278,9 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
         recordingProfileLegacy = camcorderProfile;
         captureSize =
             new Size(recordingProfileLegacy.videoFrameWidth, recordingProfileLegacy.videoFrameHeight);
-
-        previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
       }
     }
+
+    previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
   }
 }

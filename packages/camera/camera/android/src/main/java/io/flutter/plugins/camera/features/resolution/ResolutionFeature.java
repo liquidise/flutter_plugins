@@ -250,11 +250,11 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
     }
 
     if( resolutionPreset == ResolutionPreset.photoMax ) {
-      CameraCharacteristics characteristics = CameraManager.getCameraCharacteristics( cameraId.toString() );
+      CameraCharacteristics characteristics = CameraManager.getCameraCharacteristics( String.valueOf(cameraId) );
       StreamConfigurationMap streamConfig = characteristics.get(
         CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP
       );
-      Log.d( "RESOLUTION", streamConfig.getOutputSizes(ImageFormat.PRIVATE) );
+      Log.d( "RESOLUTION", streamConfig.getOutputSizes(ImageFormat.PRIVATE).toString() );
       captureSize = streamConfig.getOutputSizes(ImageFormat.PRIVATE)[0];
     } else if (Build.VERSION.SDK_INT >= 31) {
       recordingProfile =

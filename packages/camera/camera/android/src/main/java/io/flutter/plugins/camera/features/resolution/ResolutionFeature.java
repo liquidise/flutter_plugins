@@ -250,7 +250,7 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
     }
 
     if( resolutionPreset == ResolutionPreset.photoMax ) {
-      CameraCharacteristics characteristics = CameraManager.getCameraCharacteristics( String.valueOf(cameraId) );
+      CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics( String.valueOf(cameraId) );
       StreamConfigurationMap streamConfig = characteristics.get(
         CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP
       );

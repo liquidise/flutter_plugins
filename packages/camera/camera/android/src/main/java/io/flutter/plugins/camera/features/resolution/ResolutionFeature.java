@@ -259,15 +259,15 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
         );
         Size[] imageSizes = streamConfig.getOutputSizes( ImageFormat.PRIVATE );
         int maxMegapixel = 0;
-        for(var i = 0; i < imageSizes.length; i++ ) {
-          Log.d( "RESOLUTION", String.valueOf(imageSizes[i].getWidth()), String.valueOf(imageSizes[i].getHeight()), String.valueOf(imageSizes[i].getWidth()*imageSizes[i].getHeight()) );
+        for(int i = 0; i < imageSizes.length; i++ ) {
+          Log.d( "RESOLUTION", imageSizes[i].toString() );
           if( imageSizes[i].getWidth()*imageSizes[i].getHeight() > maxMegapixel ) {
             actualMaxResolution = imageSizes[ i ];
             maxMegapixel = imageSizes[i].getWidth()*imageSizes[i].getHeight();
           }
         }
 
-        Log.d( "RESOLUTION", String.valueOf(actualMaxResolution.getWidth()), String.valueOf(actualMaxResolution.getHeight()) );
+        Log.d( "RESOLUTION PICKED", actualMaxResolution.toString() );
         captureSize = actualMaxResolution;
       } catch( CameraAccessException e ) {}
     }

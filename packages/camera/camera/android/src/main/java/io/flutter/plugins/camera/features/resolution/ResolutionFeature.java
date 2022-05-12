@@ -250,20 +250,29 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       return;
     }
 
-    Size actualMax = null;
+    Size actualMaxResolution = null;
     if( resolutionPreset == ResolutionPreset.max ) {
       try {
         CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics( String.valueOf(cameraId) );
         StreamConfigurationMap streamConfig = characteristics.get(
           CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP
         );
-        Log.d( "RESOLUTION", streamConfig.getOutputSizes(ImageFormat.PRIVATE).toString() );
-        actualMax = streamConfig.getOutputSizes(ImageFormat.PRIVATE)[0];
-        captureSize = actualMax;
+        Size[] imageSizes = streamConfig.getOutputSizes( ImageFormat.PRIVATE );
+        int maxMegapixel = 0;
+        for(var i = 0; i < imageSizes.length; i++ ) {
+          Log.d( 'RESOLUTION', String.valueOf(imageSizes[i].width), String.valueOf(imageSizes[i].height), String.valueOf(imageSizes[i].width*imageSizes[i].height) );
+          if( imageSizes[i].width*imageSizes[i].height > maxMegapixel ) {
+            actualMaxResolution = imageSizes[ i ];
+            maxMegapixel = imageSizes[i].width*imageSizes[i].height;
+          }
+        }
+
+        Log.d( 'RESOLUTION', String.valueOf(actualMaxResolution.width), String.valueOf(actualMaxResolution.height) );
+        captureSize = actualMaxResolution;
       } catch( CameraAccessException e ) {}
     }
 
-    if( actualMax == null ) {
+    if( actualMaxResolution == null ) {
       if (Build.VERSION.SDK_INT >= 31) {
         recordingProfile =
             getBestAvailableCamcorderProfileForResolutionPreset(cameraId, resolutionPreset);
